@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>🙋 Add member</h2>
+  <form class="inline" method="post">
+    <label>Name <input name="name" required></label>
+    <label>Email <input name="email" type="email" required></label>
+    <button>Add</button>
+  </form>
+</div>
+<div class="card">
+  <h2>Members <span class="pill">{{ members|length }}</span></h2>
+  {% if members %}
+  <div class="scroll"><table>
+    <tr><th>Name</th><th>Email</th></tr>
+    {% for m in members %}<tr><td>😎 {{ m.name }}</td><td class="muted">{{ m.email }}</td></tr>{% endfor %}
+  </table></div>
+  {% else %}<p class="muted">No members yet.</p>{% endif %}
+</div>
+{% endblock %}

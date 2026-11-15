@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>🔖 Loans</h2>
+  <div class="stats">
+    <div class="stat">Active<b>{{ loans|rejectattr('returned_on')|list|length }}</b></div>
+    <div class="stat">Overdue<b class="overdue">{{ loans|selectattr('overdue')|list|length }}</b></div>
+  </div>
+  {% if loans %}
+  <div class="scroll"><table>
+    <tr><th>Book</th><th>Member</th><th>Issued</th><th>Due</th><th>Status</th><th>Fine</th><th></th></tr>
+    {% for l in loans %}
+    <tr>
+      <td>{{ l.title }}</td><td>{{ l.name }}</td><td class="muted">{{ l.issued_on }}</td><td>{{ l.due_on }}</td>
+      <td>{% if l.returned_on %}<span class="pill">Returned {{ l.returned_on }}</span>{% elif l.overdue %}<span class="overdue">Overdue ⏰</span>{% else %}<span class="pill">On loan</span>{% endif %}</td>
+      <td>{% if l.fine %}₹{{ l.fine }}{% else %}-{% endif %}</td>
+      <td>{% if not l.returned_on %}
+        <form method="post" action="{{ url_for('return_book', loan_id=l.id) }}"><button class="ok">Return</button></form>
+      {% endif %}</td>
+    </tr>
+    {% endfor %}
+  </table></div>
+  {% else %}<p class="muted">No loans yet.</p>{% endif %}
+</div>
+{% endblock %}

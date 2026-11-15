@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>🎟️ Issue a book</h2>
+  {% if books and members %}
+  <form class="inline" method="post">
+    <label>Book
+      <select name="book_id">{% for b in books %}<option value="{{ b.id }}">{{ b.title }} ({{ b.copies }} left)</option>{% endfor %}</select>
+    </label>
+    <label>Member
+      <select name="member_id">{% for m in members %}<option value="{{ m.id }}">{{ m.name }}</option>{% endfor %}</select>
+    </label>
+    <button>Issue</button>
+  </form>
+  {% else %}<p class="muted">Add at least one available book and one member first.</p>{% endif %}
+</div>
+{% endblock %}

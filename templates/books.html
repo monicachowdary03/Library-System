@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h1>Your next <span class="grad">read</span> awaits 📖</h1>
+  <div class="stats">
+    <div class="stat">Titles<b>{{ books|length }}</b></div>
+    <div class="stat">Copies on shelf<b>{{ books|sum(attribute='copies') }}</b></div>
+  </div>
+</div>
+<div class="card">
+  <h2>➕ Add book</h2>
+  <form class="inline" method="post" action="{{ url_for('add_book') }}">
+    <label>Title <input name="title" required></label>
+    <label>Author <input name="author" required></label>
+    <label>Copies <input name="copies" type="number" min="1" value="1" required></label>
+    <button>Add</button>
+  </form>
+</div>
+<div class="card">
+  <h2>Catalogue</h2>
+  {% if books %}
+  <div class="scroll"><table>
+    <tr><th>Title</th><th>Author</th><th>Available</th></tr>
+    {% for b in books %}
+    <tr><td>📕 {{ b.title }}</td><td class="muted">{{ b.author }}</td>
+        <td>{% if b.copies %}<span class="pill">{{ b.copies }} left</span>{% else %}<span class="overdue">Out of stock</span>{% endif %}</td></tr>
+    {% endfor %}
+  </table></div>
+  {% else %}<p class="muted">No books yet. Add one 👆</p>{% endif %}
+</div>
+{% endblock %}
